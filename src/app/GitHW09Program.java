@@ -17,71 +17,95 @@ public class GitHW09Program {
             }
             System.out.println();
         }
-        int sumEvenRow = 0, sumOddColumn = 0;
+        int sumEvenRow = 0, sumOddRow = 0;
         for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                if(array2D[i][j] % 2 == 0){
+            if(i % 2 == 0){
+                for (int j = 0; j < 4; j++) {
                     sumEvenRow += array2D[i][j];
                 }
-                else{
-                    sumOddColumn += array2D[i][j];
+            }else{
+                for (int j = 0; j < 4; j++) {
+                    sumOddRow += array2D[i][j];
+
                 }
             }
         }
-        long pEvenColumn = 1, pOddColumn = 1;
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                if(array2D[i][j] % 2 == 0){
-                    pEvenColumn *= array2D[i][j];
+        long productEvenCol = 1, productOddCol = 1;
+        for (int j = 0; j < 4; j++) {
+            if(j % 2 == 0){
+                for (int i = 0; i < 4; i++) {
+                    productEvenCol *= array2D[i][j];
                 }
-                else {
-                    pOddColumn *= array2D[i][j];
+            }else{
+                for (int i = 0; i < 4; i++) {
+                    productOddCol *= array2D[i][j];
                 }
             }
         }
         System.out.println();
-        System.out.printf("Сума елементів у парних рядках (рядок 0, 2): %d\n" +
-                "Сума елементів у непарних рядках (рядок 1, 3): %d\n" +
-                 "Добуток елементів у парних стовпцях (стовпець 0, 2): %d \n" +
-                 "Добуток елементів у непарних стовпцях (стовпець 1, 3): %d " , sumEvenRow
-                , sumOddColumn , pEvenColumn , pOddColumn);
+        System.out.println("Сума елементів у парних рядках (рядок 0, 2): " + sumEvenRow);
+        System.out.println("Сума елементів у непарних рядках (рядок 1, 3): " + sumOddRow);
+        System.out.println("Добуток елементів у парних стовпцях (стовпець 0, 2): " + productEvenCol);
+        System.out.println("Добуток елементів у непарних стовпцях (стовпець 1, 3): " + productOddCol);
 
-        int l = array2D.length;
-        int sumDiagonal1 = 0, sumDiagonal2 = 0;
-        for (int i = 0; i < l; i++) {
-            sumDiagonal1 += array2D[i][i];
-        }
-        for (int i = 0; i < l; i++) {
-            sumDiagonal2 += array2D[i][l - 1 - i];
-        }
-        boolean isMagicSquare = true;
-        if (sumDiagonal1 != sumDiagonal2){
-            isMagicSquare = false;
-        }
-        for (int i = 0; i < l; i++) {
-            int sumRow = 0, sumColumn = 0;
-            for (int j = 0; j < l; j++) {
-                sumRow = array2D[i][j];
-                sumColumn = array2D[j][i];
-            }
-            if (sumDiagonal1 != sumRow || sumDiagonal1 != sumColumn){
-                isMagicSquare = false;
-                break;
-            }
-        }
         System.out.println();
-        if(isMagicSquare){
-            System.out.println("\nМатриця є магічним квадратом.");
-        }
-        else {
-            System.out.println("\nМатриця не є магічним квадратом.");
+        int order = array2D.length;
+
+        int[] sumRow = new int[order];
+        int[] sumCol = new int[order];
+        int[] sumDiag = new int[2];
+
+        Arrays.fill(sumRow, 0);
+        Arrays.fill(sumCol, 0);
+        Arrays.fill(sumDiag, 0);
+
+        for (int row = 0; row < order; row++) {
+            for (int col = 0; col < order; col ++) {
+                sumRow[row] += array2D[row][col];
+            }
+            System.out.println("Сума рядків " + row + "\n" + sumRow[row]);
         }
 
+        for (int col = 0; col < order; col++) {
+            for (int row = 0; row < order; row ++) {
+                sumCol[col] += array2D[row][col];
+            }
+            System.out.println("Сума стовпців " + col + "\n" + sumCol[col]);
+        }
+
+        for (int row = 0; row < order; row++) {
+            sumDiag[0] += array2D[row][row];
+        }
+        System.out.println("Сума діагоналі 0 " + "\n" + sumDiag[0]);
+
+        for(int row = 0; row < order; row++) {
+            sumDiag[1] += array2D[row][order - 1 - row];
+        }
+        System.out.println("Сума діагоналі 1 " + "\n" + sumDiag[1]);
+
+        boolean bool = true;
+
+        int sum = sumRow[0];
+        for (int i = 1; i < order; i++) {
+            bool = bool && (sum == sumRow[i]);
+        }
+        for (int i = 0; i < order; i++) {
+            bool = bool && (sum == sumCol[i]);
+        }
+        for (int i = 0; i < 2; i++) {
+            bool = bool && (sum == sumDiag[i]);
+        }
+
+        String tOrF = "";
+        if (bool) {
+            tOrF = "є";
+        } else {
+            tOrF = "не є";
+        }
+        System.out.println("Матриця " + tOrF + " магічним квадратом.");
 
     }
 }
-
-
 
 
 
